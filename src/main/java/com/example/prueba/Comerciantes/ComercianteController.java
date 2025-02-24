@@ -2,7 +2,9 @@ package com.example.prueba.Comerciantes;
 
 import com.example.prueba.Comerciantes.dto.CreateComercianteDTO;
 import com.example.prueba.Comerciantes.models.Comerciante;
+import com.example.prueba.Jwt.JwtService;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class ComercianteController {
 
     @Autowired
     private ComercianteRepository comercianteRepository;
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping("/createComerciante")
     public ResponseEntity<Comerciante> createComerciante(@RequestBody CreateComercianteDTO dto) {
@@ -28,7 +32,7 @@ public class ComercianteController {
     }
 
     @PutMapping("/updateComerciante/{id}")
-    public ResponseEntity<?> updateComerciante(@PathVariable Integer id, @RequestBody Comerciante updatedComerciante) {
+    public ResponseEntity<?> updateComerciante(@PathVariable Integer id, @RequestBody Comerciante updatedComerciante, @RequestHeader("Authorization") String authHeader) {
         Optional<Comerciante> comercianteOptional = comercianteRepository.findById(id);
         
         if (comercianteOptional.isPresent()) {
@@ -39,7 +43,12 @@ public class ComercianteController {
             comerciante.setFechaRegistro(updatedComerciante.getFechaRegistro());
             comerciante.setTelefono(updatedComerciante.getTelefono());
             comerciante.setMunicipio(updatedComerciante.getMunicipio());
-            
+            comerciante.setUpdateDate(new Date());
+
+            String token = authHeader.replace("Bearer ", "");
+            Integer documento = Integer.parseInt(jwtService.getDocumentoFromToken(token));
+            comerciante.setUserUpdate(documento);
+
             comercianteRepository.save(comerciante);
             return ResponseEntity.ok("Comerciante actualizado correctamente");
         } else {
@@ -59,5 +68,7 @@ public class ComercianteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comerciante no encontrado.");
         }
     }
+
+    
 
 }

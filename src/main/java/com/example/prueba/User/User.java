@@ -31,8 +31,9 @@ public class User implements UserDetails {
     @GeneratedValue
     Integer id;
     Integer documento;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     String username;
+    @Column(unique = true, nullable = false)
     String email;
     String password;
     @Enumerated(EnumType.STRING)

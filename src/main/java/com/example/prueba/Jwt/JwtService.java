@@ -1,6 +1,7 @@
 package com.example.prueba.Jwt;
 
 import org.springframework.stereotype.Service;
+import com.example.prueba.User.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Key;
@@ -27,9 +28,15 @@ public class JwtService {
 
     private String getToken(Map<String,Object> extraClaims, UserDetails user){
 
+        if (user instanceof User) {
+            User usuario = (User) user;
+            extraClaims.put("documento", usuario.getDocumento());
+            extraClaims.put("email", usuario.getEmail());
+        }
+
         extraClaims.put("role", user.getAuthorities().stream()
         .map(GrantedAuthority::getAuthority)
-        .collect(Collectors.toList())); // Agregar roles al token
+        .collect(Collectors.toList())); 
 
         return Jwts
             .builder()
@@ -48,12 +55,17 @@ public class JwtService {
     }
 
     public String getUsernameFromToken(String token) {
-        return getClaim(token, Claims::getSubject);
+        //return getClaim(token, Claims::getSubject);
+        return getClaim(token, claims -> claims.get("email", String.class));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
+        final String email = getUsernameFromToken(token);
+        if (userDetails instanceof User) {
+            User user = (User) userDetails;
+            return (email.equals(user.getEmail()) && !isTokenExpired(token));
+        }
+        return false;
     }
 
     private Claims getAllClaims(String token){
@@ -76,5 +88,10 @@ public class JwtService {
 
     private boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
+    }
+
+    public String getDocumentoFromToken(String token) {
+        Integer documento = getClaim(token, claims -> claims.get("documento", Integer.class));
+        return String.valueOf(documento);
     }
 }

@@ -43,18 +43,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("Usuario extraído del token: " + username);
 
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails=userDetailsService.loadUserByUsername(username);
-            System.out.println("Usuario cargado: " + userDetails.getUsername());
-            if(jwtService.isTokenValid(token, userDetails)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            try {
+                UserDetails userDetails=userDetailsService.loadUserByUsername(username);
+                System.out.println("Usuario cargado: " + userDetails.getUsername());
+                if(jwtService.isTokenValid(token, userDetails)){
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                System.out.println("Autenticación exitosa.");
-            }else{
-                System.out.println("Token inválido.");
+                    System.out.println("Autenticación exitosa.");
+                }else{
+                    System.out.println("Token inválido.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error al cargar usuario: " + e);
             }
         }
         filterChain.doFilter(request, response);

@@ -30,8 +30,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuarios", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_seq")
-    @SequenceGenerator(name = "usuarios_seq", sequenceName = "usuarios_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuarios")
+    @SequenceGenerator(name = "seq_usuarios", sequenceName = "seq_usuarios", allocationSize = 1)
     Integer id;
     Integer documento;
     @Column(nullable = false)

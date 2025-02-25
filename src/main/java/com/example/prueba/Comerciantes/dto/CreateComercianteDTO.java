@@ -9,12 +9,13 @@ import java.util.Date;
 @Setter
 public class CreateComercianteDTO {
 
-    private Integer documento;
-    private String razonSocial;
+    private Long documento;
+    private String razon_social;
     private String municipio;
     private String telefono;
     private String email;
     private Date fechaRegistro;
     private Date updateDate;
     private Integer userUpdate;
+    private Integer estado = 1;
 }

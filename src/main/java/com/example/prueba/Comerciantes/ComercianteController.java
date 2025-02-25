@@ -38,7 +38,7 @@ public class ComercianteController {
         if (comercianteOptional.isPresent()) {
             Comerciante comerciante = comercianteOptional.get();
             comerciante.setDocumento(updatedComerciante.getDocumento());
-            comerciante.setRazonSocial(updatedComerciante.getRazonSocial());
+            comerciante.setRazon_social(updatedComerciante.getRazon_social());
             comerciante.setEmail(updatedComerciante.getEmail());
             comerciante.setFechaRegistro(updatedComerciante.getFechaRegistro());
             comerciante.setTelefono(updatedComerciante.getTelefono());

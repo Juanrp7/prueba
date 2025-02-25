@@ -14,12 +14,12 @@ public class ComercianteDTO {
 
     public Integer id;
     private Integer documento;
-    private String razonSocial;
+    private String razon_social;
     private String municipio;
     private String telefono;
     private String email;
     private Date fechaRegistro;
-    private Boolean estado;
+    private Integer  estado;
     private Long cantidadEstablecimientos;
     private Double totalIngresos;
     private Long cantidadEmpleados;

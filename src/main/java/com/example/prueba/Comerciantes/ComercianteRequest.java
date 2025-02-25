@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ComercianteRequest {
-    String documento;
+    Long documento;
     String razon_social;
     String municipio;
     String telefono;
     String email;
     Date fecha_registro;
-    Boolean estado;
+    Integer estado;
 }

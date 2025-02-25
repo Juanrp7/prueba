@@ -16,14 +16,16 @@ import java.util.Date;
 public class Comerciante {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_comerciantes")
+    @SequenceGenerator(name = "seq_comerciantes", sequenceName = "seq_comerciantes", allocationSize = 1)
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private Integer documento;
+    private Long documento;
 
     @Column(nullable = false)
-    private String razonSocial;
+    private String razon_social;
 
     @Column(nullable = false)
     private String municipio;
@@ -34,10 +36,11 @@ public class Comerciante {
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
 
+    
     @Builder.Default
     @Column(nullable = false)
-    private Boolean estado = true;
-
+    private Integer estado = 1;
+    
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
     private Date updateDate;

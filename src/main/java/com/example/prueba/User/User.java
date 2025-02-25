@@ -12,7 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -28,14 +30,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuarios", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_seq")
+    @SequenceGenerator(name = "usuarios_seq", sequenceName = "usuarios_SEQ", allocationSize = 1)
     Integer id;
     Integer documento;
-    //@Column(nullable = false)
+    @Column(nullable = false)
     String username;
     @Column(unique = true, nullable = false)
     String email;
+    @Column(nullable = false)
     String password;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     Role role;
  

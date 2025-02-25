@@ -20,7 +20,7 @@ public class Comerciante {
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String documento;
+    private Integer documento;
 
     @Column(nullable = false)
     private String razonSocial;

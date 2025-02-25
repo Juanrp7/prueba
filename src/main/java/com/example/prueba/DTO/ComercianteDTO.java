@@ -13,7 +13,7 @@ import java.util.Date;
 public class ComercianteDTO {
 
     public Integer id;
-    private String documento;
+    private Integer documento;
     private String razonSocial;
     private String municipio;
     private String telefono;

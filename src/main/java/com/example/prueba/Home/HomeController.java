@@ -30,7 +30,7 @@ public class HomeController {
         return results.stream()
             .map(obj -> new ComercianteDTO(
                         (Integer) obj[0],        
-                        (String) obj[1],        
+                        (Integer) obj[1],        
                         (String) obj[2],        
                         (String) obj[3],         
                         (String) obj[4],         

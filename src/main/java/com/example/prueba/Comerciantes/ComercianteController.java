@@ -69,6 +69,27 @@ public class ComercianteController {
         }
     }
 
-    
+
+    @PutMapping("/activeOrInactive/{id}")
+    public ResponseEntity<?> activeOrInactive(@PathVariable Integer id, @RequestBody Comerciante updatedComerciante, @RequestHeader("Authorization") String authHeader){
+
+        Optional<Comerciante> comercianteOptional = comercianteRepository.findById(id);
+        
+        if (comercianteOptional.isPresent()) {
+            Comerciante comerciante = comercianteOptional.get();
+            
+            comerciante.setEstado(updatedComerciante.getEstado());
+
+            String token = authHeader.replace("Bearer ", "");
+            Integer documento = Integer.parseInt(jwtService.getDocumentoFromToken(token));
+            comerciante.setUserUpdate(documento);
+
+            comercianteRepository.save(comerciante);
+            return ResponseEntity.ok("Comerciante actualizado correctamente");
+        }else {
+            return ResponseEntity.status(404).body("Comerciante no encontrado");
+        }
+        
+    }
 
 }
